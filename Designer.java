@@ -1,12 +1,16 @@
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class Designer {
-
+    
     Graphics g = null;
     
     UserInterface theui = null;
@@ -20,7 +24,7 @@ public class Designer {
 
         this.cp = ui.getCp();
         
-        this.cp.setMainPanel(ui.getRootPanel());
+        this.cp.setMainPanel(ui.other);
         this.cp.initControlPanel();
     }
     
@@ -30,13 +34,50 @@ public class Designer {
 
     public void drawMeteors(ArrayList<Meteor> meteors) {
         if(this.g != null) {
-            for(Iterator<Meteor> it=meteors.iterator(); it.hasNext();) {
-                this.g.setColor(Color.lightGray);
-                try {
-                    Meteor meteor = it.next();
-                    this.g.drawOval(meteor.getX(), meteor.getY(), 30, 30);
-                } catch(Exception e) {}
-            }
+            Thread t = new Thread() {
+                public void run() {
+                    for(Iterator<Meteor> it=meteors.iterator(); it.hasNext();) {
+                        try {
+                            Meteor meteor = it.next();
+                            if(meteor.imageSrc.equals("") || 1== 1) {
+                                if(meteor.kind.equals("oval")) {
+                                    g.setColor(Color.WHITE );
+                                    g.fillOval(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                    g.setColor(Color.BLUE );
+                                    g.drawOval(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                } else {
+                                    if(meteor.issplit) {
+                                        g.setColor(Color.CYAN );
+                                        g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                        g.setColor(Color.BLUE );
+                                        g.drawRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                        Thread t = new Thread() {
+                                            public void run() {
+                                                try {
+                                                    URL url = new URL(meteor.imageSrc1);
+                                                    Image image = ImageIO.read(url);
+                                                    g.drawImage(image, meteor.getX(), meteor.getY(), 100, 100, null);
+                                                } catch(Exception ex ) {System.out.println(ex);}
+                                            }
+                                        };
+                                        //t.start();
+                                    } else {
+                                        g.setColor(Color.WHITE );
+                                        g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                        g.setColor(Color.BLUE );
+                                        g.drawRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                    }
+                                }
+                            }
+                            try {
+                                g.setColor(Color.WHITE );
+                                g.drawString(meteor.imageSrc, meteor.getX(), meteor.getY());
+                            } catch(Exception ex ) {System.out.println(ex);}
+                        } catch(Exception e) {}
+                    }
+                }
+            };
+            t.start();
         }
     }
 
@@ -81,7 +122,7 @@ public class Designer {
                 }
                 try {
                     Star star = it.next();
-                    this.g.drawOval(star.getX(), star.getY(), 5, 5);
+                    this.g.fillOval(star.getX(), star.getY(), 5, 5);
                 } catch(Exception e) {}
             }
         }
@@ -90,7 +131,7 @@ public class Designer {
     public void drawPlayerShots(ArrayList<Gun> guns) {
         if(this.g != null) {
             for(Iterator<Gun> it=guns.iterator(); it.hasNext();) {
-                this.g.setColor(Color.cyan);
+                this.g.setColor(Color.white);
                 try {
                     Gun gun = it.next();
                     this.g.fillRect(gun.getX(), gun.getY() + 15, 10, 10);

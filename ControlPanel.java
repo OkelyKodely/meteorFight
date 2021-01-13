@@ -1,5 +1,6 @@
 
 import java.awt.Color;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -21,16 +22,16 @@ public class ControlPanel extends JPanel {
     
     public void plusScore() {
         score += 0.5d;
-        scoreLabel.setText("Score: " + score);
+        scoreLabel.setText("Delicious score: " + score);
     }
    
     public void setMainPanel(JPanel mainPne) {
         
-        if(mainPne.getWidth() > 1300 && mainPne.getHeight() == 800) {
+        if(mainPne.getWidth() > 1200 && mainPne.getHeight() >= 700) {
         
-            mainPne.add(this);
-            this.setLayout(null);
             mainPne.setLayout(null);
+            this.setLayout(null);
+            mainPne.add(this);
         } else {
             System.out.println("Another 1 jpanel was set.  Fix bug~.");
         }
@@ -45,12 +46,12 @@ public class ControlPanel extends JPanel {
         this.setBounds(ControlPanel.LOCATIONx, ControlPanel.LOCATIONy,
                        ControlPanel.ControlPanel_WIDTH, ControlPanel.ControlPanel_HEIGHT);
         
-        this.setBackground(Color.ORANGE);
+        this.setBackground(Color.white );
     }
 
     private void wakeMeUp() {
         scoreLabel = new JLabel();
-        scoreLabel.setText("Score: 0.0");
+        scoreLabel.setText("Delicious score: 0.0");
         this.add(scoreLabel);
         
         

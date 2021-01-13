@@ -1,19 +1,59 @@
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Iterator;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.io.File;
+import java.util.ArrayList;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.ImageIcon;
+import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.Comment;
 
 public class UserInterface implements KeyListener {
 
+    Random rand = new Random();
+    
+    class Title {
+        int x, y;
+        ArrayList<Integer> x_;
+        ArrayList<Integer> y_;
+        ArrayList<Integer> x_accel;
+        ArrayList<Integer> y_accel;
+        String title = null;
+        int length = -1;
+        public Character get(int i) {
+            if(title == null) {
+                return null;
+            } else {
+                return title.charAt(i);
+            }
+        }
+    }
+    
+    ArrayList<String> abcd = new ArrayList<>();
+    ArrayList<String> abc = new ArrayList<>();
+
+    int iii = 1;
+
+    Clip sound = null;
+               
     Player ply = new Player();
 
     JPanel p = new JPanel();
+    
+    public JPanel other = new JPanel();
     
     JFrame frame = null;
     
@@ -27,7 +67,11 @@ public class UserInterface implements KeyListener {
     
     Saucer saucer2 = null;
     
-    JLabel livesLabel = new JLabel("Lives: 4");
+    Film speech = new Film("Speech", "speech.wav");
+
+    MusicStorage storage = new MusicStorage();
+
+    JLabel livesLabel = new JLabel("Lives: 40000");
     int lives = 40000;
     int countVer = 0;
     
@@ -77,19 +121,10 @@ public class UserInterface implements KeyListener {
     }
     
     private void drawTrailers() {
-        Thread thred = new Thread() {
-            public void run() {
-                while(true) {
-                    for(Iterator<Meteor> it = meteors.list().iterator(); it.hasNext();) {
-                        new Trail(it.next());
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch(Exception e) {}
-                }
-            }
-        };
-        thred.start();
+        if (1 == 1)
+        {
+           return;
+        }
     }
     
     class Player {
@@ -116,6 +151,8 @@ public class UserInterface implements KeyListener {
         int x, y;
     }
     
+    int percentage = 0;
+    
     final static int LOCATION_X = 0;
     final static int LOCATION_Y = 0;
     
@@ -128,6 +165,219 @@ public class UserInterface implements KeyListener {
     
     public UserInterface() {
 
+        final JFrame jjj = new JFrame();
+        JPanel ppp = new JPanel();
+        jjj.setLayout(null);
+        ppp.setLayout(null);
+        jjj.setBounds(0, 0, 570, 250);
+        ppp.setBounds(jjj.getBounds());
+        jjj.add(ppp);
+        Thread tt = new Thread() {
+            public void run() {
+        Thread tt = new Thread() {
+            public void run() {
+        jjj.setVisible(true);
+        jjj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ppp.getGraphics().setColor(Color.WHITE);
+            }
+        };
+        tt.start();
+            }
+        };
+        tt.start();
+                try {
+
+        boolean doi = true;
+        boolean doi2 = true;
+    int id = 1;
+    
+    int pag = 1;
+    
+    int ii = 1;
+    
+    String tstring = "";
+
+    Document doc = Jsoup.connect("https://www.allrecipes.com/recipes/").get();
+    String toString = doc.toString();
+
+    String ss = toString.substring(toString.indexOf("\"name\": [")+"\"name\": [ [".length(), toString.length());
+    String ss2 = toString.substring(toString.indexOf("\"url\": [")+"\"url\": [ [".length(), toString.length());
+    
+    String ttstr = toString;
+    
+    String ttstr2 = toString;
+    
+    String imgCat1 = "";
+    
+    String imgCat2 = "";
+
+    
+    int kount = 0;
+    
+    boolean bbb = false;
+    int wacky0 = 1;
+    int count = 1;
+    do
+    {
+        try {
+            String sub = ss;
+            String sub2 = ss2;
+            tstring = toString;
+            
+            imgCat1 = ttstr.substring(ttstr.indexOf("<noscript>") + "<noscript>".length(), ttstr.length());
+            imgCat1 = imgCat1.substring(0, imgCat1.indexOf("</noscript>"));
+            imgCat1 = imgCat1.substring(imgCat1.indexOf("src=\"") + "src=\"".length(), imgCat1.length());
+            imgCat1 = imgCat1.substring(0, imgCat1.indexOf("\""));
+            ttstr = ttstr.substring(ttstr.indexOf("<noscript>") + "<noscript>".length(), ttstr.length());
+            ttstr = ttstr.substring(ttstr.indexOf("</noscript>") + "</noscript>".length(), ttstr.length());
+
+            toString = ss;
+    
+                if(wacky0 != 1) {                
+                    try {
+                        ss = ss.substring(ss.indexOf("\",")+"\",".length(), ss.length());
+                        ss2 = ss2.substring(ss2.indexOf("\",")+"\",".length(), ss2.length());
+                    } catch(Exception eu) {
+                    }
+                }
+
+                if(doi) {
+                wacky0++;
+if(wacky0 > 30)
+doi = false;
+
+                String a1aa = ss.substring(ss.indexOf("\"") + 1, ss.length());
+                
+                String cat1 = a1aa.substring(0, a1aa.indexOf("\""));
+                
+                if(cat1.equals("World Cuisine"))
+                    doi = false;
+                
+                String a1_aa = ss2.substring(ss2.indexOf("\"") + 1, ss2.length());
+                
+                String url1 = a1_aa.substring(0, a1_aa.indexOf("\""));
+
+            Document doc1 = Jsoup.connect(url1).get();
+            String tooString = doc1.toString();
+    
+            String ss_ = tooString.substring(tooString.indexOf("\"name\": [")+"\"name\": [ [".length(), tooString.length());
+            ss_ = ss_.substring(0, ss_.indexOf("]"));
+            String ss_2 = tooString.substring(tooString.indexOf("\"url\": [")+"\"url\": [ [".length(), tooString.length());
+            ss_2 = ss_2.substring(0, ss_2.indexOf("]"));
+    
+            int wacky = 1;
+            
+            doi2 = true;
+            
+            ttstr2 = tooString;
+    
+            do {
+
+                imgCat2 = ttstr2.substring(ttstr2.indexOf("<noscript>") + "<noscript>".length(), ttstr2.length());
+                imgCat2 = imgCat2.substring(0, imgCat2.indexOf("</noscript>"));
+                imgCat2 = imgCat2.substring(imgCat2.indexOf("src=\"") + "src=\"".length(), imgCat2.length());
+                imgCat2 = imgCat2.substring(0, imgCat2.indexOf("\""));
+                ttstr2 = ttstr2.substring(ttstr2.indexOf("<noscript>") + "<noscript>".length(), ttstr2.length());
+                ttstr2 = ttstr2.substring(ttstr2.indexOf("</noscript>") + "</noscript>".length(), ttstr2.length());
+
+                if(wacky != 1) {                
+                    try {
+                        ss_ = ss_.substring(ss_.indexOf("\",")+"\",".length(), ss_.length());
+                        ss_2 = ss_2.substring(ss_2.indexOf("\",")+"\",".length(), ss_2.length());
+                    } catch(Exception eu) {
+                    }
+                }
+                
+                if(doi2) {
+                wacky++;
+        if(wacky > 37)
+        doi2 = false;
+                String aaa = ss_.substring(ss_.indexOf("\"") + 1, ss_.length());
+                
+                String cat2 = aaa.substring(0, aaa.indexOf("\""));
+                
+                String a_aa = ss_2.substring(ss_2.indexOf("\"") + 1, ss_2.length());
+                
+                String url2 = a_aa.substring(0, a_aa.indexOf("\""));
+
+                Document do1 = Jsoup.connect(url2).get();
+                
+                if(percentage > 99) { 
+                    jjj.dispose();
+                    bbb = true;
+                }
+                
+                String toooString = do1.toString();
+
+                    for(int i=0; i<12; i++) {
+                    try {
+                        String image = toooString.substring(toooString.indexOf("<noscript>") + "<noscript>".length(), toooString.length());
+                        image = image.substring(0, image.indexOf("</noscript>"));
+                        image = image.substring(image.indexOf("src=\"") + "src=\"".length(), image.length());
+                        image = image.substring(0, image.indexOf("\""));
+                        toooString = toooString.substring(toooString.indexOf("<noscript>") + "<noscript>".length(), toooString.length());
+                        toooString = toooString.substring(toooString.indexOf("</noscript>") + "</noscript>".length(), toooString.length());
+                        String title= toooString.substring(toooString.indexOf("<h3 class=\"card__title\">") + "<h3 class=\"card__title\">".length(), toooString.length());
+                        toooString = title;
+                        title = title.substring(0, title.indexOf("</h3>"));
+                        String url_title = toooString.substring(toooString.indexOf("<a class=\"card__titleLink manual-link-behavior\" href=\"") + "<a class=\"card__titleLink manual-link-behavior\" href=\"".length(), toooString.length());
+                        toooString = url_title;
+                        url_title = url_title.substring(0, url_title.indexOf("\""));
+
+                        toooString = toooString.substring(toooString.indexOf("</h3>") + "</h3>".length(), toooString.length());
+
+                        abc.add(title);
+                        abcd.add(image);
+                        count++;
+                        
+                        if(count % 37 == 0 || count == 1) {
+                            percentage ++;
+                            Thread t = new Thread() {
+                                public void run() {
+            ppp.getGraphics().setColor(Color.WHITE);
+            ppp.getGraphics().setColor(Color.RED);
+            ppp.getGraphics().setFont(new Font("arial", Font.BOLD, 80));
+                            ppp.getGraphics().drawString("Loading...", 10, 10);
+                                String ss = "|";
+                                for(int ii = 2; ii <= 99; ii++) {
+                                    if(percentage >= ii)
+                                        ss += "|";
+                                    else
+                                        ss += " ";
+                                }
+                                ss += "|";
+                                ppp.getGraphics().drawString(ss, 150, 100);
+                                ppp.getGraphics().drawString("0%", 150, 130);
+                                ppp.getGraphics().drawString("100%", 470, 130);
+                                }
+                            };
+                            t.start();
+                            
+                        }
+
+                    } catch(Exception eeee) {System.out.println(eeee);}    
+                    }
+
+                        }
+
+            } while(doi2 && !bbb);
+    
+        }
+
+        } catch(Exception ee) {
+                
+            toString = tstring;
+        }
+
+        pag++;
+
+    } while(doi && !bbb);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }        
+        
+        
+        
         livesLabel.setBounds(10, 50, 200, 40);
         
         setupUserInterface();
@@ -179,37 +429,124 @@ public class UserInterface implements KeyListener {
     }
     
     private void drawShip() {
+        d.g = p.getGraphics()
+                ;
         if(ply.direction.equals("right")) {
-            d.g.setColor(Color.red);
-            d.g.drawRect(ply.x, ply.y, 40, 20);
+            d.g.setColor(Color.pink);
+            d.g.fillRect(ply.x, ply.y, 40, 20);
             d.g.drawLine(ply.x + 40 + 12, ply.y + 10, ply.x + 40 - 12, ply.y - 10);
             d.g.drawLine(ply.x + 40 + 12, ply.y + 10, ply.x + 40 - 12, ply.y + 10+20);
+            d.g.setColor(new Color(255,0,255));
+            d.g.fillOval(ply.x - 10, ply.y, 10, 10);
+            d.g.fillOval(ply.x - 10, ply.y+10, 10, 10);
+            d.g.fillOval(ply.x - 20, ply.y+5, 10, 10);
+            d.g.fillOval(ply.x - 20-10, ply.y+5, 10, 10);
         } else if(ply.direction.equals("up")) {
-            d.g.setColor(Color.red);
-            d.g.drawRect(ply.x, ply.y - 20, 20, 40);
+            d.g.setColor(Color.pink);
+            d.g.fillRect(ply.x, ply.y - 20, 20, 40);
+            d.g.drawLine(ply.x + 10, ply.y - 12-20, ply.x + 10 - 20, ply.y + 12-20);
+            d.g.drawLine(ply.x + 10, ply.y - 12-20, ply.x + 10 + 20, ply.y + 12-20);
+            d.g.setColor(new Color(255,0,255));
+            d.g.fillOval(ply.x, ply.y+20, 10, 10);
+            d.g.fillOval(ply.x+10, ply.y+20, 10, 10);
+            d.g.fillOval(ply.x+ 5, ply.y+30, 10, 10);
+            d.g.fillOval(ply.x +5, ply.y + 40 , 10, 10);
         } else if(ply.direction.equals("left")) {
-            d.g.setColor(Color.red);
-            d.g.drawRect(ply.x - 20, ply.y + 20, 40, 20);
-            d.g.drawLine(ply.x + 0 - 12, ply.y + 10, ply.x + 0 + 12, ply.y - 10);
-            d.g.drawLine(ply.x + 0 - 12, ply.y + 10, ply.x + 0 + 12, ply.y + 10+20);
+            d.g.setColor(Color.pink);
+            d.g.fillRect(ply.x - 20, ply.y + 20, 40, 20);
+            d.g.drawLine(ply.x - 20 - 12, ply.y + 10+20, ply.x - 20 + 12, ply.y - 10+20);
+            d.g.drawLine(ply.x - 20 - 12, ply.y + 10+20, ply.x - 20 + 12, ply.y + 10+20+20);
+            d.g.setColor(new Color(255,0,255));
+            d.g.fillOval(ply.x + 20, ply.y+20, 10, 10);
+            d.g.fillOval(ply.x + 20, ply.y+20+10, 10, 10);
+            d.g.fillOval(ply.x + 30, ply.y+20+5, 10, 10);
+            d.g.fillOval(ply.x + 30+10, ply.y+20+5, 10, 10);
         } else if(ply.direction.equals("down")) {
-            d.g.setColor(Color.red);
-            d.g.drawRect(ply.x, ply.y, 20, 40);
+            d.g.setColor(Color.pink);
+            d.g.fillRect(ply.x, ply.y, 20, 40);
+            d.g.drawLine(ply.x + 10, ply.y + 12 + 40, ply.x + 10 - 20, ply.y - 12+40);
+            d.g.drawLine(ply.x + 10, ply.y + 12 + 40, ply.x + 10 + 20, ply.y - 12+40);
+            d.g.setColor(new Color(255,0,255));
+            d.g.fillOval(ply.x, ply.y-10, 10, 10);
+            d.g.fillOval(ply.x+10, ply.y-10, 10, 10);
+            d.g.fillOval(ply.x+ 5, ply.y-20, 10, 10);
+            d.g.fillOval(ply.x +5, ply.y -30 , 10,10) ; 
         }
     }
     
     private void drawSaucer(Saucer saucer) {
-        d.g.setColor(Color.ORANGE );
-        d.g.drawRect(saucer.x, saucer.y, 100, 20);
-        d.g.drawRect(saucer.x+30, saucer.y-20, 40, 20);
+        d.g.setColor(Color.green);
+        d.g.fillRect(saucer.x, saucer.y, 100, 20);
+        d.g.setColor(Color.gray);
+        d.g.fillRect(saucer.x+30, saucer.y-20, 40, 20);
     }
     
+    ImageIcon imageIcon = new ImageIcon("space.gif");
+    Image space = imageIcon.getImage();
+    
     private void clearScreen() {
-        d.g = p.getGraphics();
-        d.g.setColor(Color .black);
-        d.g.fillRect(0, 0, 1312, 600);
+        try {
+            d.g = p.getGraphics();
+            d.g.setColor(Color.BLACK);
+            d.g.fillRect(0, 0, 1312, 800);
+        } catch(Exception ec) {
+        }
     }
+    
+    public class MusicStorage {
 
+        /**
+        * Opens a wav file and plays it
+        * @param args
+        */
+       public void play(Film song) {
+           try {
+
+               sound = AudioSystem.getClip();
+
+               sound.open(AudioSystem.getAudioInputStream(new File(song.getClip())));
+               
+               sound.start();
+
+               if(iii == 1)
+                iii = 2;
+
+           } catch (Exception e) {
+               System.out.println("Whatever" + e);
+           }
+         }
+   }
+
+    private void drawLetter(Character ch, int xloc, int yloc) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                d.g.setColor(Color.WHITE);
+                d.g.drawString(ch.toString(), xloc, yloc);
+            }
+        });
+        t.start();
+    }
+    
+    public class Film {
+
+        private String name;
+        private String clip;
+
+        public Film(String name, String clip) {
+            this.name = name;
+            this.clip = clip;
+        }
+
+        public String getClip() {
+            return clip;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+    
     private void beginGame() {
         Thread thred = new Thread() {
             public void run() {
@@ -355,7 +692,7 @@ public class UserInterface implements KeyListener {
                     }
                 };
                 t9.start();
-                for(int i=0; i<1000; i++) {
+                for(int i=0; i<410; i++) {
                     stars.set();
                 }
                 guns = new GunList(ply.x, ply.y);
@@ -363,7 +700,7 @@ public class UserInterface implements KeyListener {
                 Thread t = new Thread() {
                     public void run() {
                         while(true) {
-                            for(int i=0; i<30; i++) {
+                            for(int i=0; i<16; i++) {
                                 meteors.set();
                             }
                             try {
@@ -375,6 +712,7 @@ public class UserInterface implements KeyListener {
                 t.start();
                 drawTrailers();
                 while(true) {
+                    try {
                     clearScreen();
                     
                     drawShip();
@@ -392,7 +730,70 @@ public class UserInterface implements KeyListener {
                     meteors.drawMeteors(d);
                     
                     stars.drawStars(d);
+
+                            if(abc.size() > 40)
+                                for(int i=0; i<meteors.list().size(); i++) {
+                                    try {
+                                        meteors.list().get(i).imageSrc = abc.get(i);
+                                        meteors.list().get(i).imageSrc1 = abcd.get(i);
+                                    } catch(Exception ee) {ee.printStackTrace();}
+                                }
+
+                    for(int j=0; j<meteors.list().size(); j++) {
+                        try {
+                            Meteor meteor = meteors.list().get(j);
+                            if(saucer1.x >= meteor.x && saucer1.x <= meteor.x + meteor.width && saucer1.y >= meteor.y && saucer1.y <= meteor.y + meteor.height) {
+                                meteors.list().remove(meteor);
+                                cp.plusScore();
+                                cp.scoreLabel.setText("Delicious score: " + cp.score);
+                                explode(meteor);
+                            }
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    for(int j=0; j<meteors.list().size(); j++) {
+                        try {
+                            Meteor meteor = meteors.list().get(j);
+                            if(saucer2.x >= meteor.x && saucer2.x <= meteor.x + meteor.width && saucer2.y >= meteor.y && saucer2.y <= meteor.y + meteor.height) {
+                                meteors.list().remove(meteor);
+                                cp.plusScore();
+                                explode(meteor);
+                            }
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    for(int j=0; j<meteors.list().size(); j++) {
+                        try {
+                            Meteor meteor2 = meteors.list().get(j);
+                            meteor2.width ++;
+                            meteor2.height ++;
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     
+                    for(int i = 0; i<meteors.list().size(); i++) {
+                        for(int j=0; j<meteors.list().size(); j++) {
+                            try {
+                                Meteor meteor2 = meteors.list().get(i);
+                                Meteor meteor = meteors.list().get(j);
+                                if(meteor2 != meteor && meteor2.x >= meteor.x && meteor2.x <= meteor.x + meteor.width && meteor2.y >= meteor.y && meteor2.y <= meteor.y + meteor.height) {
+                                    if(!meteor2.issplit)
+                                    meteors.list().remove(meteor2);
+                                    if(!meteor.issplit)
+                                    meteors.list().remove(meteor);
+                                    explode(meteor);
+                                }
+                            } catch(Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
                     for(int i = 0; i<guns.list().size(); i++) {
                         if(guns.list().get(i).x < 0 || guns.list().get(i).x > 1300 || guns.list().get(i).y < 0 || guns.list().get(i).y > 600)
                             guns.list().remove(guns.list().get(i));
@@ -400,10 +801,74 @@ public class UserInterface implements KeyListener {
                             try {
                                 Gun gun = guns.list().get(i);
                                 Meteor meteor = meteors.list().get(j);
-                                if(gun.x >= meteor.x && gun.x <= meteor.x + 30 && gun.y >= meteor.y && gun.y <= meteor.y + 30) {
+                                if(!meteor.issplit && gun.x >= meteor.x && gun.x <= meteor.x + meteor.width && gun.y >= meteor.y && gun.y <= meteor.y + meteor.height) {
+                                    if(1==1||gun.x <= meteor.x + 0.2*meteor.width && meteor.kind.equals("square")) {
+                                        if(1==1||gun.y <= meteor.y + 0.8*meteor.height) {
+                                            Thread tt = new Thread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Title title = new Title();
+                                                    title.title = meteor.imageSrc;
+                                                    title.x = meteor.x;
+                                                    title.y = meteor.y;
+                                                    title.x_ = new ArrayList<>();
+                                                    title.y_ = new ArrayList<>();
+                                                    title.x_accel = new ArrayList<>();
+                                                    title.y_accel = new ArrayList<>();
+                                                    for(int ind=0; ind<title.title.length(); ind++) {
+                                                        title.x_.add(title.x);
+                                                        title.y_.add(title.y);
+                                                        title.x_accel.add(rand.nextInt(30) - rand.nextInt(30));
+                                                        title.y_accel.add(rand.nextInt(30) - rand.nextInt(30));
+                                                    }int twe = 0;
+                                                    while(true) {
+                                                        for(int i=0; i<title.title.length(); i++) {
+                                                            title.x_.set(i, title.x_.get(i) + title.x_accel.get(i));
+                                                            title.y_.set(i, title.y_.get(i) + title.y_accel.get(i));
+                                                            drawLetter(title.get(i), title.x_.get(i), title.y_.get(i));
+                                                        }
+                                                        try {
+                                                            Thread.sleep(40);
+                                                        } catch(Exception exc) {
+                                                            exc.printStackTrace();
+                                                        }
+                                                        twe++;
+                                                        if(twe == 7)
+                                                            return;
+                                                    }
+                                                }
+                                            });
+                                            tt.start();
+                                            Meteor m = new Meteor();
+                                            Meteor n = new Meteor();
+                                            m.kind = "square";
+                                            n.kind = "square";
+                                            m.width = meteor.width;
+                                            m.height = meteor.height - (meteor.y - gun.y);
+                                            m.x = meteor.x;
+                                            m.y = meteor.y;
+                                            m.y_accel -= 20;
+                                            m.y_accel -= meteor.y_accel;
+                                            m.x_accel = meteor.x_accel;
+                                            meteors.list().add(m);
+                                            n.y_accel += 20;
+                                            n.y_accel += meteor.y_accel;
+                                            n.x_accel = meteor.x_accel;
+                                            n.width = meteor.width;
+                                            n.height = meteor.height - (meteor.height - (meteor.y - gun.y));
+                                            n.x = meteor.x;
+                                            n.y = gun.y;
+                                            meteors.list().add(n);
+                                            
+                                            m.issplit = true;
+                                            n.issplit
+                                                    = true;
+                                        }
+                                    }
                                     meteors.list().remove(meteor);
                                     explode(meteor);
                                     guns.list().remove(gun);
+                                    d.cp.plusScore();
                                     d.cp.plusScore();
                                 }
                             } catch(Exception e) {
@@ -418,14 +883,9 @@ public class UserInterface implements KeyListener {
                             Meteor meteor = meteors.list().get(j);
                             if(meteor.x < 0 || meteor.x > 1300 || meteor.y < 0 || meteor.y > 600)
                                 meteors.list().remove(meteor);
-                            if(ply.x >= meteor.x && ply.x <= meteor.x + 60 && ply.y >= meteor.y && ply.y <= meteor.y + 60) {
+                            if(ply.x >= meteor.x && ply.x <= meteor.x + meteor.width && ply.y >= meteor.y && ply.y <= meteor.y + meteor.height) {
                                 meteors.list().remove(meteor);
                                 explode(meteor);
-                                guns.list().clear();
-                                meteors.list().clear();
-                                for(int i=0; i<20; i++) {
-                                    meteors.set();
-                                }
                                 isalive = false;
                                 lives --;
                             }
@@ -445,6 +905,19 @@ public class UserInterface implements KeyListener {
                     
                     guns.x = ply.x;
                     guns.y = ply.y;
+                    
+                    if(ply.x < 0)
+                        ply.x = 1300;
+                    
+                    if(ply.x > 1300)
+                        ply.x = 0;
+                    
+                    if(ply.y < 0)
+                        ply.y = 1300;
+                    
+                    if(ply.y > 1300)
+                        ply.y = 0;
+                    } catch(Exception e) {}
                 }
             }
         };
@@ -463,6 +936,7 @@ public class UserInterface implements KeyListener {
     public void explode(Meteor meteor) {
         Thread tt = new Thread() {
             public void run() {
+                storage.play(speech);
                 int x1, y1, x2, y2, x3, y3, x4, y4;
                 x1 = meteor.x;
                 y1 = meteor.y;
@@ -483,13 +957,13 @@ public class UserInterface implements KeyListener {
                         d.g.setColor(Color.RED);
                         d.g.fillOval(x4, y4, 70, 70);
                         Thread.sleep(5);
-                        d.g.setColor(Color.black);
+                        d.g.setColor(Color.WHITE);
                         d.g.fillOval(x1, y1, 70, 70);
-                        d.g.setColor(Color.black);
+                        d.g.setColor(Color.WHITE);
                         d.g.fillOval(x2, y2, 70, 70);
-                        d.g.setColor(Color.black);
+                        d.g.setColor(Color.WHITE);
                         d.g.fillOval(x3, y3, 70, 70);
-                        d.g.setColor(Color.black);
+                        d.g.setColor(Color.WHITE);
                         d.g.fillOval(x4, y4, 70, 70);
                         x1--; y1--;
                         x2++; y2--;
@@ -505,16 +979,19 @@ public class UserInterface implements KeyListener {
     }
 
     public void setupUserInterface() {
-        frame = new JFrame("Meteor Fight");
+        frame = new JFrame("Meteor Fight: Space to shoot, arrows to move, and s to turn");
         frame.setLayout(null);
         
         frame.addKeyListener(this);
 
         frame.setBounds(UserInterface.LOCATION_X, UserInterface.LOCATION_Y,
                         UserInterface.UI_WIDTH, UserInterface.UI_HEIGHT);
-        p.setBounds(frame.getBounds());
+        p.setBounds(0, 0, 1312, 600);
+        other.setBounds(0, 0, 1312, 800);
         
-        frame.add(p);
+        frame.add(other);
+        
+        other.add(p);
         
         setDefaults();
         
