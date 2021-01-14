@@ -69,7 +69,7 @@ public class UserInterface implements KeyListener {
         }
         private void drawMe() {
             // Recover Graphics2D 
-            Graphics2D g2 = (Graphics2D) d.g;
+            Graphics2D g2 = d.g;
 
             // Draw the head
             Ellipse2D.Double head = new Ellipse2D.Double(x, y, 100, 150);
@@ -85,7 +85,7 @@ public class UserInterface implements KeyListener {
             g2.setColor(Color.RED);
             g2.draw(eye2);
 
-            // Draw the mouth
+            // Draw the mouthB
             Rectangle mouth = new Rectangle(x+25, y+80, 45, 20);
             g2.setColor(Color.RED);
             g2.fill(mouth);
@@ -245,15 +245,16 @@ public class UserInterface implements KeyListener {
             public void run() {
                 while(true) {
                     try {
-                        Thread.sleep(5000);
-
+                        Thread.sleep(100);
                         other.remove(p);
-                        p = null;
                         p = new JPanel();
                         p.setLayout(null);
                         p.setBounds(0, 0, 1312, 600);
+                        d.g = (Graphics2D)p.getGraphics();
                         other.add(p);
-                    } catch(Exception e) {}
+                    } catch(Exception e) {
+                        System.out.print(e);
+                    }
                 }
             }
         });
@@ -528,7 +529,7 @@ public class UserInterface implements KeyListener {
     }
     
     private void drawShip() {
-        d.g = p.getGraphics()
+        d.g = (Graphics2D)p.getGraphics()
                 ;
         if(ply.direction.equals("right")) {
             d.g.setColor(Color.pink);
@@ -585,7 +586,7 @@ public class UserInterface implements KeyListener {
     
     private void clearScreen() {
         try {
-            d.g = p.getGraphics();
+            d.g = (Graphics2D)p.getGraphics();
             d.g.setColor(Color.BLACK);
             d.g.fillRect(0, 0, 1312, 800);
         } catch(Exception ec) {
@@ -866,11 +867,11 @@ public class UserInterface implements KeyListener {
                 Thread t = new Thread() {
                     public void run() {
                         while(true) {
-                            for(int i=0; i<16; i++) {
+                            for(int i=0; i<36; i++) {
                                 meteors.set();
                             }
                             try {
-                                Thread.sleep(14000);
+                                Thread.sleep(13040);
                             } catch(Exception e) {}
                         }
                     }
