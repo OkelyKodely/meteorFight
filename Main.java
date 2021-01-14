@@ -14,7 +14,8 @@ public class Main {
                     UI.frame.setExtendedState(UI.frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
                 }
             });
-        } catch(Exception e) { e.printStackTrace();
+        } catch(Exception e) { 
+            e.printStackTrace();
         }
     }
 }

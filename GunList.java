@@ -45,18 +45,24 @@ public class GunList {
     }
 
     public void moveAlongTheShots(UserInterface.Player player) {
-        for(Iterator<Gun> it=guns.iterator(); it.hasNext();) {
-            Gun gun = it.next();
-            if(gun.direction.equals("up")) {
-                gun.setY(gun.getY() - 40 + 2*gun.y_accel);
-            } else if(gun.direction.equals("left")) {
-                gun.setX(gun.getX() - 40 + 2*gun.x_accel);
-            } else if(gun.direction.equals("down")) {
-                gun.setY(gun.getY() + 40 +2* gun.y_accel);
-            } else if(gun.direction.equals("right")) {
-                gun.setX(gun.getX() + 40 + 2 *gun.x_accel);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(Iterator<Gun> it=guns.iterator(); it.hasNext();) {
+                    Gun gun = it.next();
+                    if(gun.direction.equals("up")) {
+                        gun.setY(gun.getY() - 40 + 2*gun.y_accel);
+                    } else if(gun.direction.equals("left")) {
+                        gun.setX(gun.getX() - 40 + 2*gun.x_accel);
+                    } else if(gun.direction.equals("down")) {
+                        gun.setY(gun.getY() + 40 +2* gun.y_accel);
+                    } else if(gun.direction.equals("right")) {
+                        gun.setX(gun.getX() + 40 + 2 *gun.x_accel);
+                    }
+                }
             }
-        }
+        });
+        t.start();
     }
     
     public void drawShots(Designer gui) {

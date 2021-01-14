@@ -7,10 +7,10 @@ import javax.swing.JPanel;
 public class ControlPanel extends JPanel {
     
     final static int LOCATIONx = 0;
-    final static int LOCATIONy = 601;
+    final static int LOCATIONy = 750;
     
-    final static int ControlPanel_WIDTH = 1301;
-    final static int ControlPanel_HEIGHT = 203;
+    final static int ControlPanel_WIDTH = 1300;
+    final static int ControlPanel_HEIGHT = 100;
     
     public double score = 0.0d;
     

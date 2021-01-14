@@ -63,11 +63,17 @@ public class MeteorList {
     }
 
     public void moveAlongTheMeteors() {
-        for(Iterator<Meteor> it=meteors.iterator(); it.hasNext();) {
-            Meteor meteor = it.next();
-            meteor.x += meteor.x_accel;
-            meteor.y += meteor.y_accel;
-        }
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(Iterator<Meteor> it=meteors.iterator(); it.hasNext();) {
+                    Meteor meteor = it.next();
+                    meteor.x += meteor.x_accel;
+                    meteor.y += meteor.y_accel;
+                }
+            }
+        });
+        t.start();
     }
     
     public void drawMeteors(Designer gui) {

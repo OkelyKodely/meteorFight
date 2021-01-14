@@ -3,27 +3,102 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
-import org.jsoup.select.Elements;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.nodes.Comment;
+import javax.swing.SwingUtilities;
 
 public class UserInterface implements KeyListener {
 
+    public class Bass {
+        int x, y;
+        int x_accel, y_accel;
+        int lives = 250;
+        public Bass() {
+            Random random = new Random();
+            x = random.nextInt(500);
+            y = random.nextInt(500);
+            Thread t = new Thread() {
+                public void run() {
+                    while(true) {
+                        try {
+                            x_accel = random.nextInt(10) - random.nextInt(10);
+                            y_accel = random.nextInt(10) - random.nextInt(10);
+                            x += x_accel;
+                            y += y_accel;
+                            if(x < 0 || x > 1312 || y < 0 || y > 600)
+                            {
+                                x = random.nextInt(500);
+                                y = random.nextInt(500);
+                            }
+                            for(int i=0; i<guns.list().size(); i++) {
+                                if(guns.list().get(i).x >= x && guns.list().get(i).x <= x + 100 &&
+                                        guns.list().get(i).y >= y && guns.list().get(i).y <= y + 150) {
+                                    lives--;
+                                }
+                            }
+                            if(lives <= 0)
+                                return;
+                            drawMe();
+                            Thread.sleep(40);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            t.start();
+        }
+        private void drawMe() {
+            // Recover Graphics2D 
+            Graphics2D g2 = (Graphics2D) d.g;
+
+            // Draw the head
+            Ellipse2D.Double head = new Ellipse2D.Double(x, y, 100, 150);
+            g2.setColor(Color.GREEN);
+            g2.fill(head);
+
+            // Draw the eyes
+            Line2D.Double eye1 = new Line2D.Double(x+20, y+20, x+20, y+40);
+            g2.setColor(Color.RED);
+            g2.draw(eye1);
+
+            Line2D.Double eye2 = new Line2D.Double(x+80, y+20, x+60, y+40);
+            g2.setColor(Color.RED);
+            g2.draw(eye2);
+
+            // Draw the mouth
+            Rectangle mouth = new Rectangle(x+25, y+80, 45, 20);
+            g2.setColor(Color.RED);
+            g2.fill(mouth);
+        }
+    }
+
+    int iei = 0;
+
+    int kikl = 0;
+
     Random rand = new Random();
+    
+    JPanel eat = new JPanel();
     
     class Title {
         int x, y;
@@ -165,6 +240,26 @@ public class UserInterface implements KeyListener {
     
     public UserInterface() {
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    try {
+                        Thread.sleep(5000);
+
+                        other.remove(p);
+                        p = null;
+                        p = new JPanel();
+                        p.setLayout(null);
+                        p.setBounds(0, 0, 1312, 600);
+                        other.add(p);
+                    } catch(Exception e) {}
+                }
+            }
+        });
+        
+        t.start();
+        
         final JFrame jjj = new JFrame();
         JPanel ppp = new JPanel();
         jjj.setLayout(null);
@@ -185,196 +280,197 @@ public class UserInterface implements KeyListener {
             }
         };
         tt.start();
-                try {
+
+        try {
 
         boolean doi = true;
         boolean doi2 = true;
-    int id = 1;
-    
-    int pag = 1;
-    
-    int ii = 1;
-    
-    String tstring = "";
+            int id = 1;
 
-    Document doc = Jsoup.connect("https://www.allrecipes.com/recipes/").get();
-    String toString = doc.toString();
+            int pag = 1;
 
-    String ss = toString.substring(toString.indexOf("\"name\": [")+"\"name\": [ [".length(), toString.length());
-    String ss2 = toString.substring(toString.indexOf("\"url\": [")+"\"url\": [ [".length(), toString.length());
-    
-    String ttstr = toString;
-    
-    String ttstr2 = toString;
-    
-    String imgCat1 = "";
-    
-    String imgCat2 = "";
+            int ii = 1;
 
-    
-    int kount = 0;
-    
-    boolean bbb = false;
-    int wacky0 = 1;
-    int count = 1;
-    do
-    {
-        try {
-            String sub = ss;
-            String sub2 = ss2;
-            tstring = toString;
-            
-            imgCat1 = ttstr.substring(ttstr.indexOf("<noscript>") + "<noscript>".length(), ttstr.length());
-            imgCat1 = imgCat1.substring(0, imgCat1.indexOf("</noscript>"));
-            imgCat1 = imgCat1.substring(imgCat1.indexOf("src=\"") + "src=\"".length(), imgCat1.length());
-            imgCat1 = imgCat1.substring(0, imgCat1.indexOf("\""));
-            ttstr = ttstr.substring(ttstr.indexOf("<noscript>") + "<noscript>".length(), ttstr.length());
-            ttstr = ttstr.substring(ttstr.indexOf("</noscript>") + "</noscript>".length(), ttstr.length());
+            String tstring = "";
 
-            toString = ss;
-    
-                if(wacky0 != 1) {                
-                    try {
-                        ss = ss.substring(ss.indexOf("\",")+"\",".length(), ss.length());
-                        ss2 = ss2.substring(ss2.indexOf("\",")+"\",".length(), ss2.length());
-                    } catch(Exception eu) {
-                    }
-                }
+            Document doc = Jsoup.connect("https://www.allrecipes.com/recipes/").get();
+            String toString = doc.toString();
 
-                if(doi) {
-                wacky0++;
-if(wacky0 > 30)
-doi = false;
+            String ss = toString.substring(toString.indexOf("\"name\": [")+"\"name\": [ [".length(), toString.length());
+            String ss2 = toString.substring(toString.indexOf("\"url\": [")+"\"url\": [ [".length(), toString.length());
 
-                String a1aa = ss.substring(ss.indexOf("\"") + 1, ss.length());
-                
-                String cat1 = a1aa.substring(0, a1aa.indexOf("\""));
-                
-                if(cat1.equals("World Cuisine"))
-                    doi = false;
-                
-                String a1_aa = ss2.substring(ss2.indexOf("\"") + 1, ss2.length());
-                
-                String url1 = a1_aa.substring(0, a1_aa.indexOf("\""));
+            String ttstr = toString;
 
-            Document doc1 = Jsoup.connect(url1).get();
-            String tooString = doc1.toString();
-    
-            String ss_ = tooString.substring(tooString.indexOf("\"name\": [")+"\"name\": [ [".length(), tooString.length());
-            ss_ = ss_.substring(0, ss_.indexOf("]"));
-            String ss_2 = tooString.substring(tooString.indexOf("\"url\": [")+"\"url\": [ [".length(), tooString.length());
-            ss_2 = ss_2.substring(0, ss_2.indexOf("]"));
-    
-            int wacky = 1;
-            
-            doi2 = true;
-            
-            ttstr2 = tooString;
-    
-            do {
+            String ttstr2 = toString;
 
-                imgCat2 = ttstr2.substring(ttstr2.indexOf("<noscript>") + "<noscript>".length(), ttstr2.length());
-                imgCat2 = imgCat2.substring(0, imgCat2.indexOf("</noscript>"));
-                imgCat2 = imgCat2.substring(imgCat2.indexOf("src=\"") + "src=\"".length(), imgCat2.length());
-                imgCat2 = imgCat2.substring(0, imgCat2.indexOf("\""));
-                ttstr2 = ttstr2.substring(ttstr2.indexOf("<noscript>") + "<noscript>".length(), ttstr2.length());
-                ttstr2 = ttstr2.substring(ttstr2.indexOf("</noscript>") + "</noscript>".length(), ttstr2.length());
+            String imgCat1 = "";
 
-                if(wacky != 1) {                
-                    try {
-                        ss_ = ss_.substring(ss_.indexOf("\",")+"\",".length(), ss_.length());
-                        ss_2 = ss_2.substring(ss_2.indexOf("\",")+"\",".length(), ss_2.length());
-                    } catch(Exception eu) {
-                    }
-                }
-                
-                if(doi2) {
-                wacky++;
-        if(wacky > 37)
-        doi2 = false;
-                String aaa = ss_.substring(ss_.indexOf("\"") + 1, ss_.length());
-                
-                String cat2 = aaa.substring(0, aaa.indexOf("\""));
-                
-                String a_aa = ss_2.substring(ss_2.indexOf("\"") + 1, ss_2.length());
-                
-                String url2 = a_aa.substring(0, a_aa.indexOf("\""));
+            String imgCat2 = "";
 
-                Document do1 = Jsoup.connect(url2).get();
-                
-                if(percentage > 99) { 
-                    jjj.dispose();
-                    bbb = true;
-                }
-                
-                String toooString = do1.toString();
 
-                    for(int i=0; i<12; i++) {
-                    try {
-                        String image = toooString.substring(toooString.indexOf("<noscript>") + "<noscript>".length(), toooString.length());
-                        image = image.substring(0, image.indexOf("</noscript>"));
-                        image = image.substring(image.indexOf("src=\"") + "src=\"".length(), image.length());
-                        image = image.substring(0, image.indexOf("\""));
-                        toooString = toooString.substring(toooString.indexOf("<noscript>") + "<noscript>".length(), toooString.length());
-                        toooString = toooString.substring(toooString.indexOf("</noscript>") + "</noscript>".length(), toooString.length());
-                        String title= toooString.substring(toooString.indexOf("<h3 class=\"card__title\">") + "<h3 class=\"card__title\">".length(), toooString.length());
-                        toooString = title;
-                        title = title.substring(0, title.indexOf("</h3>"));
-                        String url_title = toooString.substring(toooString.indexOf("<a class=\"card__titleLink manual-link-behavior\" href=\"") + "<a class=\"card__titleLink manual-link-behavior\" href=\"".length(), toooString.length());
-                        toooString = url_title;
-                        url_title = url_title.substring(0, url_title.indexOf("\""));
+            int kount = 0;
 
-                        toooString = toooString.substring(toooString.indexOf("</h3>") + "</h3>".length(), toooString.length());
+            boolean bbb = false;
+            int wacky0 = 1;
+            int count = 1;
+            do
+            {
+                try {
+                    String sub = ss;
+                    String sub2 = ss2;
+                    tstring = toString;
 
-                        abc.add(title);
-                        abcd.add(image);
-                        count++;
-                        
-                        if(count % 37 == 0 || count == 1) {
-                            percentage ++;
-                            Thread t = new Thread() {
-                                public void run() {
-            ppp.getGraphics().setColor(Color.WHITE);
-            ppp.getGraphics().setColor(Color.RED);
-            ppp.getGraphics().setFont(new Font("arial", Font.BOLD, 80));
-                            ppp.getGraphics().drawString("Loading...", 10, 10);
-                                String ss = "|";
-                                for(int ii = 2; ii <= 99; ii++) {
-                                    if(percentage >= ii)
+                    imgCat1 = ttstr.substring(ttstr.indexOf("<noscript>") + "<noscript>".length(), ttstr.length());
+                    imgCat1 = imgCat1.substring(0, imgCat1.indexOf("</noscript>"));
+                    imgCat1 = imgCat1.substring(imgCat1.indexOf("src=\"") + "src=\"".length(), imgCat1.length());
+                    imgCat1 = imgCat1.substring(0, imgCat1.indexOf("\""));
+                    ttstr = ttstr.substring(ttstr.indexOf("<noscript>") + "<noscript>".length(), ttstr.length());
+                    ttstr = ttstr.substring(ttstr.indexOf("</noscript>") + "</noscript>".length(), ttstr.length());
+
+                    toString = ss;
+
+                        if(wacky0 != 1) {                
+                            try {
+                                ss = ss.substring(ss.indexOf("\",")+"\",".length(), ss.length());
+                                ss2 = ss2.substring(ss2.indexOf("\",")+"\",".length(), ss2.length());
+                            } catch(Exception eu) {
+                            }
+                        }
+
+                        if(doi) {
+                        wacky0++;
+                        if(wacky0 > 30)
+                        doi = false;
+
+                        String a1aa = ss.substring(ss.indexOf("\"") + 1, ss.length());
+
+                        String cat1 = a1aa.substring(0, a1aa.indexOf("\""));
+
+                        if(cat1.equals("World Cuisine"))
+                            doi = false;
+
+                        String a1_aa = ss2.substring(ss2.indexOf("\"") + 1, ss2.length());
+
+                        String url1 = a1_aa.substring(0, a1_aa.indexOf("\""));
+
+                    Document doc1 = Jsoup.connect(url1).get();
+                    String tooString = doc1.toString();
+
+                    String ss_ = tooString.substring(tooString.indexOf("\"name\": [")+"\"name\": [ [".length(), tooString.length());
+                    ss_ = ss_.substring(0, ss_.indexOf("]"));
+                    String ss_2 = tooString.substring(tooString.indexOf("\"url\": [")+"\"url\": [ [".length(), tooString.length());
+                    ss_2 = ss_2.substring(0, ss_2.indexOf("]"));
+
+                    int wacky = 1;
+
+                    doi2 = true;
+
+                    ttstr2 = tooString;
+
+                    do {
+
+                        imgCat2 = ttstr2.substring(ttstr2.indexOf("<noscript>") + "<noscript>".length(), ttstr2.length());
+                        imgCat2 = imgCat2.substring(0, imgCat2.indexOf("</noscript>"));
+                        imgCat2 = imgCat2.substring(imgCat2.indexOf("src=\"") + "src=\"".length(), imgCat2.length());
+                        imgCat2 = imgCat2.substring(0, imgCat2.indexOf("\""));
+                        ttstr2 = ttstr2.substring(ttstr2.indexOf("<noscript>") + "<noscript>".length(), ttstr2.length());
+                        ttstr2 = ttstr2.substring(ttstr2.indexOf("</noscript>") + "</noscript>".length(), ttstr2.length());
+
+                        if(wacky != 1) {                
+                            try {
+                                ss_ = ss_.substring(ss_.indexOf("\",")+"\",".length(), ss_.length());
+                                ss_2 = ss_2.substring(ss_2.indexOf("\",")+"\",".length(), ss_2.length());
+                            } catch(Exception eu) {
+                            }
+                        }
+
+                        if(doi2) {
+                        wacky++;
+                if(wacky > 37)
+                doi2 = false;
+                        String aaa = ss_.substring(ss_.indexOf("\"") + 1, ss_.length());
+
+                        String cat2 = aaa.substring(0, aaa.indexOf("\""));
+
+                        String a_aa = ss_2.substring(ss_2.indexOf("\"") + 1, ss_2.length());
+
+                        String url2 = a_aa.substring(0, a_aa.indexOf("\""));
+
+                        Document do1 = Jsoup.connect(url2).get();
+
+                        if(percentage > 99) { 
+                            jjj.dispose();
+                            bbb = true;
+                        }
+
+                        String toooString = do1.toString();
+
+                            for(int i=0; i<12; i++) {
+                            try {
+                                String image = toooString.substring(toooString.indexOf("<noscript>") + "<noscript>".length(), toooString.length());
+                                image = image.substring(0, image.indexOf("</noscript>"));
+                                image = image.substring(image.indexOf("src=\"") + "src=\"".length(), image.length());
+                                image = image.substring(0, image.indexOf("\""));
+                                toooString = toooString.substring(toooString.indexOf("<noscript>") + "<noscript>".length(), toooString.length());
+                                toooString = toooString.substring(toooString.indexOf("</noscript>") + "</noscript>".length(), toooString.length());
+                                String title= toooString.substring(toooString.indexOf("<h3 class=\"card__title\">") + "<h3 class=\"card__title\">".length(), toooString.length());
+                                toooString = title;
+                                title = title.substring(0, title.indexOf("</h3>"));
+                                String url_title = toooString.substring(toooString.indexOf("<a class=\"card__titleLink manual-link-behavior\" href=\"") + "<a class=\"card__titleLink manual-link-behavior\" href=\"".length(), toooString.length());
+                                toooString = url_title;
+                                url_title = url_title.substring(0, url_title.indexOf("\""));
+
+                                toooString = toooString.substring(toooString.indexOf("</h3>") + "</h3>".length(), toooString.length());
+
+                                abc.add(title);
+                                abcd.add(image);
+                                count++;
+
+                                if(count % 37 == 0 || count == 1) {
+                                    percentage ++;
+                                    Thread t3 = new Thread() {
+                                        public void run() {
+                    ppp.getGraphics().setColor(Color.WHITE);
+                    ppp.getGraphics().setColor(Color.RED);
+                    ppp.getGraphics().setFont(new Font("arial", Font.BOLD, 80));
+                                    ppp.getGraphics().drawString("Loading...", 10, 10);
+                                        String ss = "|";
+                                        for(int ii = 2; ii <= 99; ii++) {
+                                            if(percentage >= ii)
+                                                ss += "|";
+                                            else
+                                                ss += " ";
+                                        }
                                         ss += "|";
-                                    else
-                                        ss += " ";
+                                        ppp.getGraphics().drawString(ss, 150, 100);
+                                        ppp.getGraphics().drawString("0%", 150, 130);
+                                        ppp.getGraphics().drawString("100%", 430, 130);
+                                        }
+                                    };
+                                    t3.start();
+
                                 }
-                                ss += "|";
-                                ppp.getGraphics().drawString(ss, 150, 100);
-                                ppp.getGraphics().drawString("0%", 150, 130);
-                                ppp.getGraphics().drawString("100%", 470, 130);
+
+                            } catch(Exception eeee) {System.out.println(eeee);}    
+                            }
+
                                 }
-                            };
-                            t.start();
-                            
-                        }
 
-                    } catch(Exception eeee) {System.out.println(eeee);}    
-                    }
+                    } while(doi2 && !bbb);
 
-                        }
+                }
 
-            } while(doi2 && !bbb);
-    
-        }
+                } catch(Exception ee) {
 
-        } catch(Exception ee) {
-                
-            toString = tstring;
-        }
+                    toString = tstring;
+                }
 
-        pag++;
+                pag++;
 
-    } while(doi && !bbb);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }        
+            } while(doi && !bbb);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }        
         
         
         
@@ -391,9 +487,6 @@ doi = false;
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-            guns.shoot(ply);
-        }
         
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
             ply.x_accel -= 2;
@@ -418,6 +511,12 @@ doi = false;
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+
+            guns.shoot(ply);
+        }
+
     }
     
     private void pauseIndefinitely() {
@@ -544,6 +643,73 @@ doi = false;
 
         public String getName() {
             return name;
+        }
+    }
+
+    int u = 0;
+
+    public void setAbcd() {
+        Graphics gr = eat.getGraphics();
+        if(kikl == 0) {
+            kikl = 1;
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Thread a = new Thread() {
+                        public void run() {
+                            while(true) {
+                            }
+                        }
+                    };
+                    while(true)
+                        try {
+                            try {
+                            final BufferedImage image = new BufferedImage(
+                                    200, 200, BufferedImage.TYPE_INT_RGB);
+                            Runnable r = new Runnable() {
+                                @Override
+                                public void run() {
+                                    Graphics2D g = (Graphics2D) gr;
+                                    GradientPaint primary = new GradientPaint(
+                                            0f, 0f, Color.WHITE, 200f, u, new Color(u,u,u));
+                                    GradientPaint shade = new GradientPaint(
+                                            0f, 0f, new Color(u, 0, 0, 0),
+                                            0f, 200f, new Color(u, 0, 0, 255));
+                                    u+=10;
+                                    if(u >= 255)
+                                        u = 0;
+                                    g.setPaint(primary);
+                                    g.fillRect(0, 0, 1312, 140);
+                                    g.setPaint(shade);
+                                    g.fillRect(0, 0, 1312, 140);
+                                }
+                            };
+                            SwingUtilities.invokeLater(r);
+                                Thread.sleep(130);
+                            } catch(Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            int j = 0;
+                            for(int i=iei; i<iei+11; i++) {
+                                try {
+                                    URL url = new URL(abcd.get(i));
+                                    Image image2 = ImageIO.read(url);
+                                    gr.drawImage(image2, 10 + j++*113, 10, 95, 95, null);
+                                } catch(Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            iei += 11;
+                            if(iei >= abcd.size())
+                                iei = 0;
+                            Thread.sleep(10000);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                }
+            });
+            t.start();
         }
     }
     
@@ -711,9 +877,18 @@ doi = false;
                 };
                 t.start();
                 drawTrailers();
+                setAbcd();
+                int jj = 1;
                 while(true) {
                     try {
                     clearScreen();
+                    
+                    if(d.cp.score > jj && d.cp.score < jj + 43) {
+                        jj += 42;
+
+                        Bass b = new Bass();
+                        Bass c = new Bass();
+                    }
                     
                     drawShip();
                     
@@ -934,6 +1109,7 @@ doi = false;
     }
     
     public void explode(Meteor meteor) {
+        if(1==1)return;
         Thread tt = new Thread() {
             public void run() {
                 storage.play(speech);
@@ -987,9 +1163,13 @@ doi = false;
         frame.setBounds(UserInterface.LOCATION_X, UserInterface.LOCATION_Y,
                         UserInterface.UI_WIDTH, UserInterface.UI_HEIGHT);
         p.setBounds(0, 0, 1312, 600);
-        other.setBounds(0, 0, 1312, 800);
+        other.setBounds(0, 0, 1312, 850);
         
         frame.add(other);
+        
+        eat.setBounds(0, 600, 1312, 150);
+        
+        other.add(eat);
         
         other.add(p);
         
