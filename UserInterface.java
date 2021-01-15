@@ -245,7 +245,7 @@ public class UserInterface implements KeyListener {
             public void run() {
                 while(true) {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(10000);
                         other.remove(p);
                         p = new JPanel();
                         p.setLayout(null);
@@ -266,18 +266,13 @@ public class UserInterface implements KeyListener {
         jjj.setLayout(null);
         ppp.setLayout(null);
         jjj.setBounds(0, 0, 570, 250);
+        ppp.setBackground(Color.RED);
         ppp.setBounds(jjj.getBounds());
         jjj.add(ppp);
         Thread tt = new Thread() {
             public void run() {
-        Thread tt = new Thread() {
-            public void run() {
-        jjj.setVisible(true);
-        jjj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ppp.getGraphics().setColor(Color.WHITE);
-            }
-        };
-        tt.start();
+                jjj.setVisible(true);
+                jjj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             }
         };
         tt.start();
@@ -704,7 +699,7 @@ public class UserInterface implements KeyListener {
                             iei += 11;
                             if(iei >= abcd.size())
                                 iei = 0;
-                            Thread.sleep(10000);
+                            Thread.sleep(40000);
                         } catch(Exception e) {
                             e.printStackTrace();
                         }
@@ -867,7 +862,7 @@ public class UserInterface implements KeyListener {
                 Thread t = new Thread() {
                     public void run() {
                         while(true) {
-                            for(int i=0; i<36; i++) {
+                            for(int i=0; i<9; i++) {
                                 meteors.set();
                             }
                             try {

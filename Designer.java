@@ -38,14 +38,6 @@ public class Designer {
         this.g = (Graphics2D)graph;
     }
 
-    GradientPaint primary1 = new GradientPaint(
-            0f, 0f, Color.WHITE, 200f, 100, Color.CYAN);
-    GradientPaint primary = new GradientPaint(
-            0f, 0f, Color.WHITE, 200f, 100, new Color(100,100,100));
-    GradientPaint shade = new GradientPaint(
-            0f, 0f, new Color(100, 0, 0, 0),
-            0f, 200f, new Color(100, 0, 0, 255));
-
     public void drawMeteors(ArrayList<Meteor> meteors) {
         if(this.g != null) {
             Thread t = new Thread() {
@@ -53,45 +45,34 @@ public class Designer {
                     for(Iterator<Meteor> it=meteors.iterator(); it.hasNext();) {
                         try {
                             Meteor meteor = it.next();
-                            Thread ttt = new Thread() {
+                            Thread t9 = new Thread(new Runnable() {
                                 public void run() {
-                                    int xPoly[] =  {meteor.getX(), 
-                                                    meteor.getX()+10, 
-                                                    meteor.getX()+17};
-                                    int yPoly[] =  {meteor.getY(), 
-                                                    meteor.getY()-20, 
-                                                    meteor.getY()+35};
-                                    Polygon poly = new Polygon(xPoly, yPoly, xPoly.length);
-                                    if(meteor.kind.equals("oval")) {
-                                        g.setPaint(primary);
-                                        g.fillPolygon(poly);
-                                        g.setPaint(shade);
-                                        g.fillPolygon(poly);
-                                    } else {
-                                        if(meteor.issplit) {
-                                            g.setPaint(primary);
-                                            g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
-                                            g.setPaint(shade);
-                                            g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                    if(meteor.imageSrc.equals("") || 1== 1) {
+                                        if(meteor.kind.equals("oval")) {
+                                            g.setColor(Color.WHITE);
+                                            g.fillOval(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
                                         } else {
-                                            g.setPaint(primary1);
-                                            g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
-                                            g.setPaint(shade);
-                                            g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                            if(meteor.issplit) {
+                                                g.setColor(Color.WHITE);
+                                                g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                            } else {
+                                                g.setColor(Color.WHITE);
+                                                g.fillRect(meteor.getX(), meteor.getY(), meteor.width, meteor.height);
+                                            }
                                         }
+                                        g.setColor(Color.red);
+                                        g.drawLine(meteor.getX()+4, meteor.getY()+meteor.height/2, meteor.getX()+meteor.width-4, meteor.getY()+meteor.height/2);
+                                        g.drawLine(meteor.getX()+meteor.width/2, meteor.getY()+4, meteor.getX()+meteor.width/2, meteor.getY()+meteor.height-4);
                                     }
-                                }
-                            };
-                            ttt.start();
-                            Thread t8 = new Thread() {
-                                public void run() {
                                     try {
-                                        g.setColor(Color.WHITE );
+                                        g.setColor(Color.white);
                                         g.drawString(meteor.imageSrc, meteor.getX(), meteor.getY());
                                     } catch(Exception ex ) {System.out.println(ex);}
+                                    meteor.width += 1;
+                                    meteor.height += 1;
                                 }
-                            };
-                            t8.start();
+                            });
+                            t9.start();
                         } catch(Exception e) {}
                     }
                 }
