@@ -25,6 +25,10 @@ public class Designer {
     
     Random ran = new Random();
     
+    ImageIcon ii = new ImageIcon("obama.png");
+
+    Image obamaImg = ii.getImage();
+    
     public Designer(UserInterface ui) {
         this.theui = ui;
 
@@ -135,6 +139,18 @@ public class Designer {
                 try {
                     Gun gun = it.next();
                     ((Graphics2D)this.g).fillRect(gun.getX(), gun.getY() + 15, 10, 10);
+                } catch(Exception e) {}
+            }
+        }
+    }
+
+    public void drawObamasPlease(ArrayList<Obama> obamas) {
+        if(this.g != null) {
+            for(Iterator<Obama> it=obamas.iterator(); it.hasNext();) {
+                ((Graphics2D)this.g).setColor(Color.white);
+                try {
+                    Obama obama = it.next();
+                    ((Graphics2D)this.g).drawImage(obamaImg, obama.x, obama.y, 100, 100, null);
                 } catch(Exception e) {}
             }
         }

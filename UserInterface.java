@@ -138,6 +138,8 @@ public class UserInterface implements KeyListener {
     
     StarList stars = null;
     
+    ObamaList obamas = null;
+    
     Saucer saucer1 = null;
     
     Saucer saucer2 = null;
@@ -859,13 +861,17 @@ public class UserInterface implements KeyListener {
                 }
                 guns = new GunList(ply.x, ply.y);
                 meteors = new MeteorList(0, 0);
+                obamas = new ObamaList(0, 0);
                 Thread t = new Thread() {
                     public void run() {
                         while(true) {
-                            for(int i=0; i<9; i++) {
-                                meteors.set();
-                            }
-                            try {
+                                        for(int i=0; i<9; i++) {
+                                            meteors.set();
+                                        }
+                                obamas.set();
+                                obamas.set();
+
+                                try {
                                 Thread.sleep(13040);
                             } catch(Exception e) {}
                         }
@@ -899,6 +905,8 @@ public class UserInterface implements KeyListener {
                     meteors.moveAlongTheMeteors();
                     
                     meteors.drawMeteors(d);
+                    
+                    obamas.drawObamas(d);
                     
                     stars.drawStars(d);
 
@@ -968,6 +976,20 @@ public class UserInterface implements KeyListener {
                     for(int i = 0; i<guns.list().size(); i++) {
                         if(guns.list().get(i).x < 0 || guns.list().get(i).x > 1300 || guns.list().get(i).y < 0 || guns.list().get(i).y > 600)
                             guns.list().remove(guns.list().get(i));
+                        for(int j=0; j<obamas.list().size(); j++) {
+                            try {
+                                Gun gun = guns.list().get(i);
+                                Obama meteor = obamas.list().get(j);
+                                if(gun.x >= meteor.x && gun.x <= meteor.x + 100 && gun.y >= meteor.y && gun.y <= meteor.y + 100) {
+                                    obamas.list().remove(meteor);
+                                    guns.list().remove(gun);
+                                    d.cp.plusScore();
+                                    d.cp.plusScore();
+                                    d.cp.plusScore();
+                                    d.cp.plusScore();
+                                }
+                            } catch(Exception e) {}
+                        }
                         for(int j=0; j<meteors.list().size(); j++) {
                             try {
                                 Gun gun = guns.list().get(i);
